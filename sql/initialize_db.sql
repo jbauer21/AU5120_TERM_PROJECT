@@ -58,7 +58,7 @@ CREATE TABLE Customers (
 -- Create Carriers Table
 CREATE TABLE Carriers (
     ShipperID INT PRIMARY KEY AUTO_INCREMENT,
-    ShpperName VARCHAR(100) NOT NULL
+    ShpperName VARCHAR(100) NOT NULL  -- Ensure column name matches CSV format if necessary
 );
 
 -- Create Orders Table
