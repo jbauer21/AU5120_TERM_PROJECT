@@ -1,25 +1,25 @@
 -- Drop tables in reverse dependency order
-DROP TABLE IF EXISTS OrderDetails;
-DROP TABLE IF EXISTS Orders;
-DROP TABLE IF EXISTS Books;
-DROP TABLE IF EXISTS Employees;
-DROP TABLE IF EXISTS Customers;
-DROP TABLE IF EXISTS Carriers;
-DROP TABLE IF EXISTS Suppliers;
-DROP TABLE IF EXISTS Subjects;
+DROP TABLE IF EXISTS db_order_detail;
+DROP TABLE IF EXISTS db_order;
+DROP TABLE IF EXISTS db_book;
+DROP TABLE IF EXISTS db_employee;
+DROP TABLE IF EXISTS db_customer;
+DROP TABLE IF EXISTS db_shipper;
+DROP TABLE IF EXISTS db_supplier;
+DROP TABLE IF EXISTS db_subject;
 
 -- Create the database if it doesn't exist and use it
 CREATE DATABASE IF NOT EXISTS bookstore_db;
 USE bookstore_db;
 
--- Create Subjects Table
-CREATE TABLE Subjects (
+-- Create db_subject Table
+CREATE TABLE db_subject (
     SubjectID INT PRIMARY KEY AUTO_INCREMENT,
     CategoryName VARCHAR(100) NOT NULL
 );
 
--- Create Suppliers Table
-CREATE TABLE Suppliers (
+-- Create db_supplier Table
+CREATE TABLE db_supplier (
     SupplierID INT PRIMARY KEY AUTO_INCREMENT,
     CompanyName VARCHAR(100) NOT NULL,
     ContactLastName VARCHAR(50),
@@ -27,15 +27,15 @@ CREATE TABLE Suppliers (
     Phone VARCHAR(20)
 );
 
--- Create Employees Table
-CREATE TABLE Employees (
+-- Create db_employee Table
+CREATE TABLE db_employee (
     EmployeeID INT PRIMARY KEY AUTO_INCREMENT,
     LastName VARCHAR(50) NOT NULL,
     FirstName VARCHAR(50) NOT NULL
 );
 
--- Create Books Table
-CREATE TABLE Books (
+-- Create db_book Table
+CREATE TABLE db_book (
     BookID INT PRIMARY KEY AUTO_INCREMENT,
     Title VARCHAR(150) NOT NULL,
     UnitPrice DECIMAL(10, 2) NOT NULL,
@@ -43,43 +43,43 @@ CREATE TABLE Books (
     Quantity INT NOT NULL,
     SupplierID INT,
     SubjectID INT,
-    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID),
-    FOREIGN KEY (SubjectID) REFERENCES Subjects(SubjectID)
+    FOREIGN KEY (SupplierID) REFERENCES db_supplier(SupplierID),
+    FOREIGN KEY (SubjectID) REFERENCES db_subject(SubjectID)
 );
 
--- Create Customers Table
-CREATE TABLE Customers (
+-- Create db_customer Table
+CREATE TABLE db_customer (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     LastName VARCHAR(50) NOT NULL,
     FirstName VARCHAR(50) NOT NULL,
     Phone VARCHAR(20)
 );
 
--- Create Carriers Table
-CREATE TABLE Carriers (
+-- Create db_shipper Table
+CREATE TABLE db_shipper (
     ShipperID INT PRIMARY KEY AUTO_INCREMENT,
-    ShpperName VARCHAR(100) NOT NULL  -- Ensure column name matches CSV format if necessary
+    ShipperName VARCHAR(100) NOT NULL
 );
 
--- Create Orders Table
-CREATE TABLE Orders (
+-- Create db_order Table
+CREATE TABLE db_order (
     OrderID INT PRIMARY KEY AUTO_INCREMENT,
     CustomerID INT,
     EmployeeID INT,
     OrderDate DATE NOT NULL,
     ShippedDate DATE,
     ShipperID INT,
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
-    FOREIGN KEY (ShipperID) REFERENCES Carriers(ShipperID)
+    FOREIGN KEY (CustomerID) REFERENCES db_customer(CustomerID),
+    FOREIGN KEY (EmployeeID) REFERENCES db_employee(EmployeeID),
+    FOREIGN KEY (ShipperID) REFERENCES db_shipper(ShipperID)
 );
 
--- Create OrderDetails Table
-CREATE TABLE OrderDetails (
+-- Create db_order_detail Table
+CREATE TABLE db_order_detail (
     OrderDetailID INT PRIMARY KEY AUTO_INCREMENT,
     OrderID INT,
     BookID INT,
     Quantity INT NOT NULL,
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-    FOREIGN KEY (BookID) REFERENCES Books(BookID)
+    FOREIGN KEY (OrderID) REFERENCES db_order(OrderID),
+    FOREIGN KEY (BookID) REFERENCES db_book(BookID)
 );

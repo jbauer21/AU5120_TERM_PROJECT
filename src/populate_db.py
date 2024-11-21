@@ -55,15 +55,15 @@ def main():
         return
 
     csv_files_info = {
-        '../data/db_subject.csv': ('Subjects', ['SubjectID', 'CategoryName'], ['SubjectID']),
-        '../data/db_supplier.csv': ('Suppliers', ['SupplierID', 'CompanyName', 'ContactLastName', 'ContactFirstName', 'Phone'], ['SupplierID']),
-        '../data/db_employee.csv': ('Employees', ['EmployeeID', 'LastName', 'FirstName'], ['EmployeeID']),
-        '../data/db_book.csv': ('Books', ['BookID', 'Title', 'UnitPrice', 'Author', 'Quantity', 'SupplierID', 'SubjectID'], ['BookID']),
-        '../data/db_customer.csv': ('Customers', ['CustomerID', 'LastName', 'FirstName', 'Phone'], ['CustomerID']),
-        '../data/db_shipper.csv': ('Carriers', ['ShipperID', 'ShpperName'], ['ShipperID']),
-        '../data/db_order.csv': ('Orders', ['OrderID', 'CustomerID', 'EmployeeID', 'OrderDate', 'ShippedDate', 'ShipperID'], ['OrderID']),
-        '../data/db_order_detail.csv': ('OrderDetails', ['OrderDetailID', 'OrderID', 'BookID', 'Quantity'], ['OrderDetailID'])
-    }
+    '../data/db_subject.csv': ('db_subject', ['SubjectID', 'CategoryName'], ['SubjectID']),
+    '../data/db_supplier.csv': ('db_supplier', ['SupplierID', 'CompanyName', 'ContactLastName', 'ContactFirstName', 'Phone'], ['SupplierID']),
+    '../data/db_employee.csv': ('db_employee', ['EmployeeID', 'LastName', 'FirstName'], ['EmployeeID']),
+    '../data/db_book.csv': ('db_book', ['BookID', 'Title', 'UnitPrice', 'Author', 'Quantity', 'SupplierID', 'SubjectID'], ['BookID']),
+    '../data/db_customer.csv': ('db_customer', ['CustomerID', 'LastName', 'FirstName', 'Phone'], ['CustomerID']),
+    '../data/db_shipper.csv': ('db_shipper', ['ShipperID', 'ShpperName'], ['ShipperID']),  # Typo handled here
+    '../data/db_order.csv': ('db_order', ['OrderID', 'CustomerID', 'EmployeeID', 'OrderDate', 'ShippedDate', 'ShipperID'], ['OrderID']),
+    '../data/db_order_detail.csv': ('db_order_detail', ['OrderDetailID', 'OrderID', 'BookID', 'Quantity'], ['OrderDetailID'])
+}
 
     for file_path, (table_name, columns, auto_increment_cols) in csv_files_info.items():
         print(f"Inserting data from {file_path} into {table_name}...")
