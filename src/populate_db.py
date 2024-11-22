@@ -42,11 +42,11 @@ def insert_data_from_csv(conn, table_name, csv_file_path, columns, auto_incremen
         try:
             cursor.execute(sql, values)
         except mysql.connector.Error as err:
-            print(f"Error inserting data into {table_name}: {err}")
+            print("Error inserting data into {}: {}".format(table_name, err))
 
     conn.commit()  # Ensure each table data insertion is committed
     cursor.close()
-    print(f"Data inserted into {table_name} from {csv_file_path}.")
+    print("Data inserted into {} from {}.".format(table_name, csv_file_path))
 
 # Main script to insert data from CSV files
 def main():
@@ -66,7 +66,7 @@ def main():
     }
 
     for file_path, (table_name, columns, auto_increment_cols) in csv_files_info.items():
-        print(f"Inserting data from {file_path} into {table_name}...")
+        print("Inserting data from {} into {}...".format(file_path, table_name))
         insert_data_from_csv(conn, table_name, file_path, columns, auto_increment_columns=auto_increment_cols)
 
     conn.close()
