@@ -1,6 +1,5 @@
-import pandas as pd
+import csv
 import os
-import numpy as np
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -30,19 +29,22 @@ def connect_to_database():
 # Function to read CSV files and insert data into the database
 def insert_data_from_csv(conn, table_name, csv_file_path, columns, auto_increment_columns=[]):
     cursor = conn.cursor()
-    data = pd.read_csv(csv_file_path)
-    columns_to_insert = [col for col in columns if col not in auto_increment_columns]
 
-    for _, row in data.iterrows():
-        placeholders = ", ".join(["%s"] * len(columns_to_insert))
-        columns_str = ", ".join(columns_to_insert)
-        sql = "INSERT INTO {} ({}) VALUES ({})".format(table_name, columns_str, placeholders)
-        values = tuple(None if pd.isna(row[column]) else int(row[column]) if isinstance(row[column], (np.int64, np.int32)) else row[column] for column in columns_to_insert)
+    # Open the CSV file
+    with open(csv_file_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        columns_to_insert = [col for col in columns if col not in auto_increment_columns]
 
-        try:
-            cursor.execute(sql, values)
-        except mysql.connector.Error as err:
-            print("Error inserting data into {}: {}".format(table_name, err))
+        for row in reader:
+            placeholders = ", ".join(["%s"] * len(columns_to_insert))
+            columns_str = ", ".join(columns_to_insert)
+            sql = "INSERT INTO {} ({}) VALUES ({})".format(table_name, columns_str, placeholders)
+            values = tuple(row[col] if col in row and row[col] != '' else None for col in columns_to_insert)
+
+            try:
+                cursor.execute(sql, values)
+            except mysql.connector.Error as err:
+                print("Error inserting data into {}: {}".format(table_name, err))
 
     conn.commit()  # Ensure each table data insertion is committed
     cursor.close()
